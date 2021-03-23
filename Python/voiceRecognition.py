@@ -1,5 +1,7 @@
-#import the peech rocognizer library
+#import the speech recognizer and pyfirmata libraries
+import pyfirmata as pf
 import speech_recognition as sr
+import time
 
 def listen(recognizer, microphone):
     #listen to mic
@@ -30,6 +32,16 @@ def listen(recognizer, microphone):
 
 #the main code that will be run
 if __name__ == "__main__":
+
+    #setting up the serial connection to the arduino
+    board = pf.Arduino('COM3')
+    it = pf.util.Iterator(board)
+    it.start()
+
+    #setting up the pins
+    pin11 = board.get_pin('d:11:o')
+    pin13 = board.get_pin('d:13:o')
+
     #creating a recognizer object
     r = sr.Recognizer()
 
@@ -67,10 +79,16 @@ if __name__ == "__main__":
         #check what command was said
         if "open" in command["text"].lower():
             print("Opening door...")
-            #insert motor code here using pyfirmata
+            #motor will turn counterclockwise
+            pin13.write(0.5)
+            time.sleep(5)
+            pin13.write(0)
         elif "close" in command["text"].lower():
             print("Closing door...")
-            #insert motor code here
+            #motor will turn clockwise
+            pin11.write(0.5)
+            time.sleep(5)
+            pin11.write(0)
         elif "exit" in command["text"].lower():
             print("Exiting program... Say hi to Rabab for me.")
             break

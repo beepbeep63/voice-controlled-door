@@ -5,9 +5,9 @@ def listen(recognizer, microphone):
     #listen to mic
     with microphone as source:
             print("Setting up mic... stay silent for 1 second.")
-            r.adjust_for_ambient_noise(source)
+            recognizer.adjust_for_ambient_noise(source)
             print("Say your command.")
-            audio = r.listen(source)
+            audio = recognizer.listen(source)
             print("Transcribing...")
     
     #setting up a dict for the information received
@@ -19,7 +19,7 @@ def listen(recognizer, microphone):
 
     #check for errors
     try:
-        response["text"] = r.recognize_google(audio)
+        response["text"] = recognizer.recognize_google(audio)
     except sr.RequestError:
         response["success"] = False
         response["error"] = "API unavailable"
@@ -65,9 +65,12 @@ if __name__ == "__main__":
         print("You said: {}".format(command["text"]))
 
         #check what command was said
-        if "open" in command["text"]:
+        if "open" in command["text"].lower():
             print("Opening door...")
             #insert motor code here using pyfirmata
-        elif "close" in command["text"]:
+        elif "close" in command["text"].lower():
             print("Closing door...")
             #insert motor code here
+        elif "exit" in command["text"].lower():
+            print("Exiting program... Say hi to Rabab for me.")
+            break

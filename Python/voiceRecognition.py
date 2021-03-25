@@ -77,17 +77,20 @@ if __name__ == "__main__":
         print("You said: {}".format(command["text"]))
 
         #check what command was said
-        if "open" in command["text"].lower():
-            print("Opening door...")
+        if "close" in command["text"].lower():
+            print("Closing door...")
             #motor will turn counterclockwise
             pin13.write(1)
-            time.sleep(2)
-            pin13.write(0)
-        elif "close" in command["text"].lower():
-            print("Closing door...")
-            #motor will turn clockwise
             pin11.write(1)
-            time.sleep(2)
+            time.sleep(5)
+            pin11.write(0)
+            print("Door closed.")
+        elif "open" in command["text"].lower():
+            print("Open door...")
+            #motor will turn clockwise
+            pin13.write(0)
+            pin11.write(1)
+            time.sleep(5)
             pin11.write(0)
         elif "exit" in command["text"].lower():
             print("Exiting program... Say hi to Rabab for me.")
